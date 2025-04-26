@@ -43,7 +43,7 @@
    ```
 
 7. **Seed the Database**  
-   This will create a default users.
+   This will create default users.
    ```bash
    php artisan db:seed
    ```
@@ -63,3 +63,8 @@
    php artisan serve
    ```
    The application will be available at: [http://localhost:8000](http://localhost:8000)
+
+## Default Login Credentials
+
+- **Email:** test@example.com  
+- **Password:** password
