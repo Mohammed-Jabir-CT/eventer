@@ -43,7 +43,7 @@
    ```
 
 7. **Seed the Database**  
-   This will create a default users.
+   This will create default users.
    ```bash
    php artisan db:seed
    ```
@@ -63,3 +63,12 @@
    php artisan serve
    ```
    The application will be available at: [http://localhost:8000](http://localhost:8000)
+
+## Default Login Credentials
+
+- **Email:** test@example.com  
+- **Password:** password
+
+## Quick Explanation
+
+The application is built using Laravel Livewire with Volt components for dynamic user interaction, styled using Tailwind CSS for a clean and responsive design. I implemented event relationships to manage interactions between users and requisition items, ensuring that actions like claiming or uploading are properly handled. Authorization is controlled through Laravel policies, where only invited users are allowed to upload images and claim requisition items.
