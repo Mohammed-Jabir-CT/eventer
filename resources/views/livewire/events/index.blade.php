@@ -70,25 +70,11 @@ new class extends Component {
                                 </td>
                                 <td>
                                     <div class="flex space-x-2">
-                                        {{-- @can('update', $event)
-                                            <a href="{{ route('events.edit', $event->id) }}">
-                                                <x-secondary-button>
-                                                    {{ __('Edit') }}
-                                                </x-secondary-button>
-                                            </a>
-                                        @endcan --}}
                                         <a href="{{ route('events.view', $event->id) }}">
                                             <x-primary-button>
                                                 {{ __('View') }}
                                             </x-primary-button>
                                         </a>
-                                        {{-- @can('delete', $event)
-                                            <a href="{{ route('events.view', $event->id) }}">
-                                                <x-danger-button>
-                                                    {{ __('Delete') }}
-                                                </x-danger-button>
-                                            </a>
-                                        @endcan --}}
                                     </div>
                                 </td>
                             </tr>
