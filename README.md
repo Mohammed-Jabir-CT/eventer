@@ -72,3 +72,8 @@
 ## Quick Explanation
 
 The application is built using Laravel Livewire with Volt components for dynamic user interaction, styled using Tailwind CSS for a clean and responsive design. I implemented event relationships to manage interactions between users and requisition items, ensuring that actions like claiming or uploading are properly handled. Authorization is controlled through Laravel policies, where only invited users are allowed to upload images and claim requisition items.
+
+## Points to Note
+
+- Only invited users who have accepted the invitation can mark items as "claimed"
+- Only users invited to the event can upload images.
