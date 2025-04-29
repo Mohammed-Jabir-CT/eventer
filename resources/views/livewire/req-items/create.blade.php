@@ -21,7 +21,7 @@ new class extends Component {
     {
         $requisition_list_id = $requisition_list->id;
         $this->event = $requisition_list->event;
-        $this->authorize('create', $this->event);
+        $this->authorize('create', [RequisitionItem::class, $this->event]);
         $this->requisition_list_id = $requisition_list_id;
     }
 
