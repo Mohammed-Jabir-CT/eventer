@@ -26,7 +26,6 @@ new class extends Component {
             'newPhoto' => 'image|max:1024',
         ]);
 
-        // Store the photo in a private location
         $path = $this->newPhoto->store('event_photos', 'public');
 
         EventPhoto::create([
