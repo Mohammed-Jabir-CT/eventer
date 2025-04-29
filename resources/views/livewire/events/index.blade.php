@@ -2,17 +2,54 @@
 
 use Livewire\Volt\Component;
 use Livewire\WithPagination;
+use Livewire\Attributes\Url;
 use App\Models\Event;
+use Carbon\Carbon;
 
 new class extends Component {
     use WithPagination;
+
+    #[Url(history: true)]
+    public string $search = '';
+
+    #[Url(history: true)]
+    public ?string $date = null;
+
+    public function mount(): void
+    {
+        $this->date = null;
+    }
+
     public function render(): mixed
     {
+        $query = Event::orderBy('created_at', 'desc')->with(['createdBy', 'eventFor', 'users']);
+
+        if ($this->search) {
+            $query->where('title', 'like', '%' . $this->search . '%');
+        }
+
+        if ($this->date) {
+            try {
+                $parsedDate = Carbon::parse($this->date)->format('Y-m-d');
+                $query->where('date', $parsedDate);
+            } catch (\Exception $e) {
+                $this->date = null;
+            }
+        }
+
         return view('livewire.events.index', [
-            'events' => Event::orderBy('created_at', 'desc')
-                ->with(['createdBy', 'eventFor', 'users'])
-                ->paginate(10),
+            'events' => $query->paginate(10),
         ]);
+    }
+
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingDate()
+    {
+        $this->resetPage();
     }
 }; ?>
 
@@ -33,6 +70,12 @@ new class extends Component {
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="p-4 bg-white rounded-lg shadow-md">
+                <div class="mb-4 flex gap-4">
+                    <input type="text" placeholder="Search Events..." wire:model.live.debounce.300ms="search"
+                        class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" />
+                    <input type="date" wire:model.live="date"
+                        class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" />
+                </div>
                 <table class="min-w-full divide-y divide-gray-200 table-auto">
                     <thead class="bg-gray-100">
                         <tr>
