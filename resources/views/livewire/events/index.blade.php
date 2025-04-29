@@ -59,7 +59,7 @@ new class extends Component {
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                 {{ __('Events') }}
             </h2>
-            <a href="{{ route('events.create') }}">
+            <a href="{{ route('events.create') }}" wire:navigate>
                 <x-primary-button>
                     {{ __('Create Event') }}
                 </x-primary-button>
@@ -113,7 +113,7 @@ new class extends Component {
                                 </td>
                                 <td>
                                     <div class="flex space-x-2">
-                                        <a href="{{ route('events.view', $event->id) }}">
+                                        <a href="{{ route('events.view', $event->id) }}" wire:navigate>
                                             <x-primary-button>
                                                 {{ __('View') }}
                                             </x-primary-button>

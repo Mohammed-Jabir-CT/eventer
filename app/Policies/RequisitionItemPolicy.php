@@ -65,6 +65,9 @@ class RequisitionItemPolicy
 
     public function claim(User $user, RequisitionItem $requisitionItem): bool
     {
+        if($requisitionItem->availability == false) {
+            return false;
+        }
         $event = $requisitionItem->requisitionList->event;
 
         $pivotStatus = $event->users->find($user->id)?->pivot->status;

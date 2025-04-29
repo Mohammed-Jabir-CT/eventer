@@ -20,7 +20,7 @@ new class extends Component {
 
     public function mount(Event $event)
     {
-        $this->event = $event->load(['requisitionList.requisitionItems', 'users']);
+        $this->event = $event->load(['requisitionList.requisitionItems.claimedBy', 'users']);
         $this->eventExpired = $this->event->hasExpired();
         $this->title = $event->title;
         $this->date = $event->date ? Carbon::parse($event->date)->format('Y-m-d') : '';
@@ -30,17 +30,17 @@ new class extends Component {
         $this->event_for = $event->event_for;
     }
 
-    public function getEventTypeProperty(): ?EventType
+    public function getEventTypeProperty()
     {
         return $this->event_type_id ? EventType::find($this->event_type_id) : null;
     }
 
-    public function getEventForUserProperty(): ?User
+    public function getEventForUserProperty()
     {
         return $this->event_for ? User::find($this->event_for) : null;
     }
 
-    public function getInvitedUsersProperty(): \Illuminate\Database\Eloquent\Collection
+    public function getInvitedUsersProperty()
     {
         return $this->event->users;
     }
@@ -74,6 +74,7 @@ new class extends Component {
 
         if ($canClaim) {
             $item->claimed_by = auth()->id();
+            $item->availability = false;
             $item->save();
             $this->event = $this->event->fresh('requisitionList.requisitionItems');
         }
@@ -127,6 +128,7 @@ new class extends Component {
                     <div class="mb-4">
                         <p class="text-gray-600 dark:text-gray-400">
                             <span class="font-semibold">Event For:</span> {{ $this->eventForUser->name }}
+                            ({{ $this->eventForUser->email }})
                         </p>
                     </div>
                 @endif
@@ -158,7 +160,7 @@ new class extends Component {
                             $canClaim = $this->event->requisitionList->visibility == 1 || $isInvited;
 
                         @endphp
-                        @if ($canClaim || $user == $this->event->createdBy)
+                        @if ($canClaim || $user == $this->event->createdBy || $user == $this->eventForUser)
                             <h2 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Requisition Items
                             </h2>
 
@@ -175,7 +177,7 @@ new class extends Component {
                                                 </p>
                                                 @if ($item->claimed_by)
                                                     <p class="text-xs text-green-600 dark:text-green-400">Claimed by:
-                                                        {{ \App\Models\User::find($item->claimed_by)?->name }}</p>
+                                                        {{ $item->claimedBy->name }}</p>
                                                 @endif
                                             </div>
 
@@ -207,7 +209,7 @@ new class extends Component {
 
                 <div class="mt-6 flex items-center gap-4">
                     @can('update', $event)
-                        <a href="{{ route('events.edit', $event) }}">
+                        <a href="{{ route('events.edit', $event) }}" wire:navigate>
                             <x-primary-button>
                                 {{ __('Edit Event') }}
                             </x-primary-button>
@@ -222,8 +224,8 @@ new class extends Component {
 
                     @can('create', [RequisitionItem::class, $event])
                         @if ($this->event->requisitionList)
-                            <a
-                                href="{{ route('requisition-items.create', ['requisition_list' => $this->event->requisitionList->id]) }}">
+                            <a href="{{ route('requisition-items.create', ['requisition_list' => $this->event->requisitionList->id]) }}"
+                                wire:navigate>
                                 <x-primary-button>
                                     {{ __('Add Requisition Item') }}
                                 </x-primary-button>
@@ -232,14 +234,14 @@ new class extends Component {
                     @endcan
 
 
-                    <a href="{{ route('events.gallery', ['event' => $this->event]) }}">
+                    <a href="{{ route('events.gallery', ['event' => $this->event]) }}" wire:navigate>
                         <x-primary-button>
                             {{ __('Events Gallery') }}
                         </x-primary-button>
                     </a>
 
 
-                    <a href="{{ route('events.index') }}">
+                    <a href="{{ route('events.index') }}" wire:navigate>
                         <x-secondary-button>
                             {{ __('Back to Events') }}
                         </x-secondary-button>

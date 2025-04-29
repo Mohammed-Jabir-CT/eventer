@@ -9,7 +9,7 @@ class RequisitionItem extends Model
     protected $fillable = [
         'requisition_list_id',
         'name',
-        'avaiability',
+        'availability',
         'is_optional',
         'claimed_by'
     ];
@@ -17,5 +17,10 @@ class RequisitionItem extends Model
     public function requisitionList()
     {
         return $this->belongsTo(RequisitionList::class);
+    }
+
+    public function claimedBy()
+    {
+        return $this->belongsTo(User::class, 'claimed_by');
     }
 }
