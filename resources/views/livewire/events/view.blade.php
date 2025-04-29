@@ -158,7 +158,7 @@ new class extends Component {
                             $canClaim = $this->event->requisitionList->visibility == 1 || $isInvited;
 
                         @endphp
-                        @if ($canClaim)
+                        @if ($canClaim || $user == $this->event->createdBy)
                             <h2 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Requisition Items
                             </h2>
 
