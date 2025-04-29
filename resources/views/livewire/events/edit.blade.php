@@ -11,10 +11,10 @@ new class extends Component {
     #[Validate('required|string|max:255')]
     public string $title = '';
 
-    #[Validate('required|date')]
+    #[Validate('required|date|after_or_equal:today')]
     public string $date = '';
 
-    #[Validate('required')]
+    #[Validate('required|after_or_equal:now')]
     public string $time = '';
 
     #[Validate('required|exists:event_types,id')]

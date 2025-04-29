@@ -11,10 +11,10 @@ new class extends Component {
     #[Validate('required|string|max:255')]
     public string $title = '';
 
-    #[Validate('required|date')]
-    public string $date = ''; // Example time format validation
+    #[Validate('required|date|after_or_equal:today')]
+    public string $date = '';
 
-    #[Validate('required')]
+    #[Validate('required|after_or_equal:now')]
     public string $time = '';
 
     #[Validate('required|exists:event_types,id')]
@@ -30,7 +30,7 @@ new class extends Component {
     public array $invited_users = [];
 
     #[Validate('required|boolean')]
-    public bool $visibility = false; // Default to private (0)
+    public bool $visibility = false;
 
     public $users;
     public $eventTypes;
