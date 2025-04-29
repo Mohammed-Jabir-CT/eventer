@@ -15,10 +15,13 @@ new class extends Component {
     #[Validate('boolean')]
     public bool $is_optional = false;
 
+    public $event = null;
+
     public function mount(RequisitionList $requisition_list)
     {
         $requisition_list_id = $requisition_list->id;
-        $this->authorize('create', $requisition_list->event);
+        $this->event = $requisition_list->event;
+        $this->authorize('create', $this->event);
         $this->requisition_list_id = $requisition_list_id;
     }
 
@@ -74,6 +77,11 @@ new class extends Component {
 
             <div>
                 <x-primary-button type="submit">Add Item</x-primary-button>
+                <a href="{{ route('events.view', ['event' => $event]) }}" wire:navigate>
+                    <x-secondary-button>
+                        {{ __('Back to Event') }}
+                    </x-secondary-button>
+                </a>
             </div>
         </form>
     </div>

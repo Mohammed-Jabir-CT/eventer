@@ -57,11 +57,9 @@ new class extends Component {
         $this->event = $this->event->fresh('users');
     }
 
-    public function claimItem($itemId)
+    public function claimItem($item)
     {
-        $item = RequisitionItem::findOrFail($itemId);
-
-        if ($item->claimed_by) {
+        if ($item->claimed_by && !$item->is_optional) {
             return;
         }
 
@@ -187,7 +185,7 @@ new class extends Component {
 
                                             @if (!$this->eventExpired)
                                                 @if ($item->claimed_by === null && $canClaim)
-                                                    <x-primary-button wire:click="claimItem({{ $item->id }})">
+                                                    <x-primary-button wire:click="claimItem({{ $item }})">
                                                         {{ __('Claim') }}
                                                     </x-primary-button>
                                                 @elseif ($alreadyClaimed)
