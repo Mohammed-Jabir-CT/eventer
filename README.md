@@ -42,23 +42,28 @@
    php artisan migrate
    ```
 
-7. **Seed the Database**  
+7. **Link Storage to Display Images**  
+   ```bash
+   php artisan storage:link
+   ```
+
+8. **Seed the Database**  
    This will create default users.
    ```bash
    php artisan db:seed
    ```
-8. **Install Frontend Dependencies**  
+9. **Install Frontend Dependencies**  
    ```bash
    npm install
    ```
 
-9. **Run the Frontend Vite Dev Server**  
+10. **Run the Frontend Vite Dev Server**  
    This will start the frontend on [http://localhost:5173](http://localhost:5173):
    ```bash
    npm run dev
    ```
 
-10. **Start the Development Server**  
+11. **Start the Development Server**  
    ```bash
    php artisan serve
    ```
